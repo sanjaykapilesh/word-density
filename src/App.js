@@ -11,6 +11,7 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { AppFlex } from "./components/chakraOverrides/AppFlex";
+import { useDebounce, useDebouncedCallback } from "use-debounce";
 
 export default function App() {
   const [text, setText] = useState({
@@ -56,6 +57,7 @@ export default function App() {
     }
   }, [text]);
 
+  const findWordDebounced = useDebouncedCallback(() => findWord(), 500)
   function handleChange(event) {
     setText((pre) => {
       return {
@@ -63,6 +65,7 @@ export default function App() {
         [event.target.name]: event.target.value,
       };
     });
+    findWordDebounced()
   }
 
   function findWord() {
@@ -112,7 +115,7 @@ export default function App() {
     <Box className="App" w="full" p={10}>
       <Text
         as="h1"
-        fontSize="5xl"
+        fontSize="4xl"
         fontWeight="medium"
         mb={5}
         textTransform="upperCase"
